@@ -1,5 +1,4 @@
 package com.usa.ciclo3.prueba_ciclo3_reto3.service;
-
 import com.usa.ciclo3.prueba_ciclo3_reto3.crudrepository.CategoryCrudRepository;
 import com.usa.ciclo3.prueba_ciclo3_reto3.model.Category;
 import com.usa.ciclo3.prueba_ciclo3_reto3.repository.CategoryRepository;
@@ -27,8 +26,8 @@ public class CategoryService {
         if (category.getId() == null) {
             return categoryRepository.save(category);
         } else {
-            Optional<Category> tmpcategory = categoryRepository.getCategory(category.getId());
-            if (tmpcategory.isEmpty()) {
+            Optional<Category> tmpCategory = categoryRepository.getCategory(category.getId());
+            if (tmpCategory.isEmpty()) {
                 return categoryRepository.save(category);
             } else {
                 return category;
@@ -38,14 +37,23 @@ public class CategoryService {
 
     public Category update(Category category) {
         if (category.getId() != null) {
-            Optional<Category> tmpCategory = categoryRepository.getCategory(category.getId());
-            if (tmpCategory.isEmpty()) {
-                return categoryRepository.save(category);
+            Optional<Category> g = categoryRepository.getCategory(category.getId());
+            if (!g.isEmpty()) {
+                if (category.getDescription() != null) {
+                    g.get().setDescription(category.getDescription());
+                }
+                if (category.getName() != null) {
+                    g.get().setName(category.getName());
+                }
+                categoryRepository.save(g.get());
+                return g.get();
+            } else {
+                return category;
             }
+        } else {
+            return category;
         }
-        return null;
     }
-
     public boolean deleteCategory(int id){
         Boolean aBoolean=getCategory(id).map(category -> {
             categoryRepository.delete(category);

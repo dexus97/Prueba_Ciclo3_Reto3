@@ -27,13 +27,13 @@ public class CategoryController {
         return categoryService.getCategory(id);
     }
 
-    @PutMapping("/save")
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category save(@RequestBody Category category){
+    private Category save(@RequestBody Category category){
         return categoryService.save(category);
     }
 
-    @DeleteMapping("/update")
+    @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
     public Category update(@RequestBody Category category){
         return categoryService.update(category);
